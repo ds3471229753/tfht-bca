@@ -1,0 +1,65 @@
+[v-cloak]{
+    display: none;
+}
+
+html,body{
+    margin: 0;
+    padding: 0;
+}
+
+hr{
+    border-top: 1px solid #999;
+}
+
+h4{
+    cursor: pointer;
+}
+
+table{
+    width: 65%;
+    margin: 0 auto;
+}
+
+tr{
+    height: 20px;
+    line-height: 20px;
+}
+
+input.form-control{
+    border-radius: 20px;
+}
+
+button.btn{
+    border-radius: 10px
+}
+
+#unit-config label,#edit-account label,#serial-port label{
+    text-align: justify;
+    text-align-last: justify;
+    width: 80%;
+}
+
+#app{
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#copyright{
+    text-align: center;
+}
+
+
+
+#serial-port table select,button{
+    width: 124px;
+}
+
+.bg-color{
+    padding: 20px;
+    background: #e2e2e2;
+}
+
+.span_c{
+    color: red;
+}

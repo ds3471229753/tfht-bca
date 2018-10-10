@@ -1,0 +1,62 @@
+[v-cloak]{
+    display: none;
+}
+
+html,body{
+    margin: 0;
+    padding: 0;
+}
+
+/*向左浮动*/
+div.f-left{
+    float: left;
+}
+
+h1{
+    font-size: 5rem;
+}
+
+h2{
+    text-align: left;
+}
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+input.form-control{
+    border-radius: 10px;
+}
+
+button{
+    width: 100%;
+    border-radius: 10px;
+}
+
+#app{
+    width: 100%;
+    margin-top: 80px;
+    text-align: center;
+}
+
+#content{
+    width: 100%;
+    height: 60%;
+    background-color: #e2e2e2;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#logoImg,#login{
+    height: 100%;
+}
+
+.input-style {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 60%;
+}

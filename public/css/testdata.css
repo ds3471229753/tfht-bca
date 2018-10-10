@@ -1,0 +1,68 @@
+[v-cloak]{
+    display: none;
+}
+
+html,body{
+    height: 100%;
+}
+
+table label{
+    width: 80%;
+    text-align: justify;
+    text-align-last: justify;
+}
+
+#main-con{
+    overflow: auto;
+}
+
+#main-con li.pull-right{
+    padding: 4px 0;
+    width: 400px;
+}
+
+#main-con li.pull-right input,#con-left-up table tr input,#con-left-down table tr input {
+    border-radius: 20px;
+}
+
+#main-con li.pull-right span{
+    border: none;
+    z-index: 10;
+    position: relative;
+    padding: 0;
+    right: 30px;
+    cursor: pointer;
+}
+
+#main-con li.pull-right span.input-group-addon{
+    background: none;
+}
+
+#con-left{
+    padding: 20px;
+}
+
+#con-right{
+    border-left: 1px solid #999;
+    padding-bottom: 20px;
+}
+
+#myTabContent{
+    height: 600px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+#con-left-up,#con-left-down{
+    padding: 20px;
+    margin-top: 20px;
+    background: #e1e1e1;
+}
+
+#con-left-up table,#con-left-down table{
+    width: 100%;
+}
+
+.tr_height{
+    height: 10px;
+}

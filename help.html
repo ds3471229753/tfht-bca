@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>说明与帮助</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/help.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/vue.js"></script>
+    <script src="/js/layer.js"></script>
+</head>
+<body>
+<div id="app">
+    <br>
+    <h4>1.软件说明</h4>
+    <p>欢迎使用“{{ version }}”。</p>
+    <p>这是同方健康股份（北京）有限公司开发的配套BCA系列人体成分分析仪的电脑端数据管理软件，仅能与我公司出品的BCA系列人体成分分析仪连接。</p>
+    <p>本软件版权属同方健康股份（北京）有限公司所有。</p>
+    <br>
+    <h4>2.安装环境与安装方法</h4>
+    <p>本软件适用于Windows系统电脑，包括MicroSoft Windows XP/2007/7/10系列32位及64位环境。</p>
+    <p>本软件无任何安装依赖，无需预装任何插件及库。</p>
+    <p>本软件安装极为简单，只要把包含软件的文件夹拷贝到电脑上，运行其中/bin目录下的bodivista.exe文件即可。您可将其设为桌面快捷方式。</p>
+    <br>
+    <p>打开bodivista.exe，进入登录页，在此输入账号和密码，初始账号为<span>{{ init_name }}</span>，初始密码为<span>{{ init_pwd }}</span>。</p>
+    <div>
+        <img :src="index_url" alt="">
+    </div>
+    <p class="p_center">图一</p>
+    <p>登录成功后显示页面如图二所示：</p>
+    <div>
+        <img :src="testdata_url" alt="">
+    </div>
+    <p class="p_center">图二</p>
+    <p>使用前，请安装好体成分仪的串口USB转接线的驱动。该驱动程序在本安装包里有，32位电脑系统请运行dpinst-x86，64位系统请运行dpinst-amd64驱动安装程序。安装完驱动程序后，将串口USB转接线插入电脑的任意USB端口，会被虚拟成一个串口。</p>
+    <br>
+    <h4>3.连接与设置</h4>
+    <p>确保人体成分分析仪已用串口USB转接线与电脑相连，体成分仪已开机。</p>
+    <p>使用本软件的第一步，是进行设置。如图二左上角标红的位置，设置窗口如图三所示，其中红色<span>*</span>号的为必填项</p>
+    <div>
+        <img :src="sysconfig_url" alt="">
+    </div>
+    <p class="p_center">图三</p>
+    <p>a.设置单位信息。请输入单位名称和电话,这会显示在打印的报告上。单位编码是上报数据所用，普通用户可不填。</p>
+    <p>b.修改账号。点击账号信息，可以修改账户和密码，不是必选项，可以选择不更改</p>
+    <p>c.打开串口。点击“串口扫描”，会显示电脑上的所有可用串口（COM口）。其中除COM1外的其他COM口中，编号最大的一般是USB虚拟串口。选择后点击“打开体测串口”或者“打开体成分串口”（如需连接体测仪器，则选择体测串口，如需连接体成分仪器，则选择体成分串口）串口即可打开。如要关闭此串口，可点击“关闭串口”。</p>
+    <p>d.实时上传。勾选实时上传前的按钮，则会在联网的情况下自动上传测试数据</p>
+    <p>当配置好后点击保存，保存成功后返回主界面。然后点击图二右上角的【连接仪器】按钮</p>
+    <p>【连接仪器】左侧的状态栏会显示“正在连接中，请稍等……”，如仪器连接正常，则显示“正常待机”。同时右侧的红色图标会变成绿色的对勾</p>
+    <p><span>*</span>如10秒钟后还无法连接成功，请检查（1）体成分仪是否正常开机；（2）在控制面板-设备管理器中找到USB-serial port，看COM编号是否相符，是否工作正常。</p>
+    <br>
+    <p>如显示“正常待机”，则可以测试了。这时测试数据会在测试完成后显示到页面上，如果是连接体成分仪，则可以进行主控测试了</p>
+    <p>断开连接，只要关闭串口即可。</p>
+    <br>
+    <h4>4.人员信息管理</h4>
+    <p>点击首页的人员信息进入人员列表页，如图四</p>
+    <div>
+        <img :src="person_url" alt="">
+    </div>
+    <p class="p_center">图四</p>
+    <p>对于经常性测试的人员，或需要统一管理的人员，有必要事先录入到人员库中，在测试时选择就可以了。</p>
+    <p>系统中已预置了几个模拟人员，供测试使用。如不需要，可删除。</p>
+    <br>
+    <h5>4.1人员的新增和修改</h5>
+    <p>点击新增按钮进入新增人员页面，请按提示规则，新增人员。如图五</p>
+    <div>
+        <img :src="add_url" alt="">
+    </div>
+    <p class="p_center">图五</p>
+    <p>删除人员时请选中，支持删除多个人员</p>
+    <br>
+    <h5>4.2批量导入人员</h5>
+    <p>如果需要录入大批量人员，可采用批量导入的方式。</p>
+    <p>用EXCEL/WPS打开“人员信息导入模板”文件（CSV格式），按照模板中的人员信息格式录入人员。单位识别码和手机号是非必填项，其他必须填。</p>
+    <p>点击【导入】按钮，弹出文件选择框，选择“人员信息导入模板”文件，所有EXCEL表中的人员信息会导入数据库，并在右侧人员信息中出现。</p>
+    <p>【注意】示例数据请删除。已录入的人员信息请删除，避免重复录入。</p>
+    <br>
+    <h4>5.测试</h4>
+    <p>体成分测试分为实时采集模式和主控模式两种模式。前者适合临时测试的人员，后者适合定期经常性测试人员，如会员、病人等。</p>
+    <br>
+    <h5>5.1 实时采集模式</h5>
+    <p>连接成功后，测试者直接站到人体成分仪上测试即可，在仪器触摸屏上输入编号、性别、身高、年龄，测试完毕后数据会自动出现在主页下方的数据显示区。</p>
+</div>
+
+<script>
+	new Vue({
+		el: '#app',
+		data: {
+            version: '人体成分测量与管理系统（Bodivista） V4.0版',
+            init_name: 'tfht',
+            init_pwd: '123456',
+            index_url: '/image/screen_index.png',
+            testdata_url: '/image/screen_testdata.png',
+            sysconfig_url: '/image/screen_sysconfig.png',
+            person_url: '/image/screen_person.png',
+            add_url: '/image/screen_add.png',
+		}
+	})
+</script>
+</body>
+</html>

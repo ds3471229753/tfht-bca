@@ -1,0 +1,95 @@
+html,body{
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand>img{
+    width: 177px;
+    height: 100%;
+}
+
+table{
+    white-space: nowrap; /* 防止表格内容竖直排列 */
+}
+
+hr{
+    border-top: 1px solid #999;
+}
+
+div.navbar-header{
+    width: 177px;
+}
+
+a.navbar-brand{
+    padding: 0;
+}
+
+#app{
+    min-width: 1366px;
+}
+
+#header{
+    background: black;
+}
+
+#ul-header-left>li{
+    /*width: 120px;*/
+    text-align: center;
+}
+
+/*#ul-header-left>li>a{
+    padding-left: 25px;
+    padding-right: 25px;
+}*/
+
+#ul-header-left>li:hover{
+    background: #e1e1e1;
+}
+
+#ul-header-right>li>label{
+    margin-bottom: 0;
+    color: #fff;
+    /*color: #777;*/
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#ul-header-right>li{
+    margin-left: 10px;
+}
+
+#ul-header-right>li.ele-padding-8{
+    padding: 8px 0;
+}
+
+#ul-header-right>li.ele-padding-10{
+    padding: 10px 0;
+}
+
+/*按钮工具栏*/
+#tool{
+    height: 34px;
+    margin-top: 50px;
+    width: 100%;
+    min-width: 1100px;
+}
+
+#tool-right{
+    margin-right: 20px;
+}
+
+#tool button {
+    margin-left: 20px;
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/*尾部声明*/
+#footer{
+    margin-top: 20px;
+    width: 100%;
+    padding-top: 19px;
+    text-align: center;
+    border-top: 1px grey solid;
+}

@@ -1,0 +1,57 @@
+[v-cloak]{
+    display: none;
+}
+
+html,body{
+    margin: 0;
+    padding: 0;
+}
+
+hr{
+    border-top: 1px solid #999;
+}
+
+h1{
+    padding-left: 20px;
+}
+
+h1 i{
+    font-size: 20px;
+    margin-left: 35px;
+}
+
+table{
+    margin: 0 auto;
+    width: 65%;
+}
+
+tr{
+    height: 35px;
+    line-height: 35px;
+}
+
+label{
+    text-align: justify;
+    text-align-last: justify;
+    width: 80%;
+    margin-bottom: 0;
+    padding-right: 5px;
+}
+
+input.form-control{
+    border-radius: 20px;
+}
+
+#app{
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#copyright{
+    text-align: center;
+}
+
+.span_c{
+    color: red;
+}

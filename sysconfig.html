@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>系统设置</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="/css/common.css">-->
+    <link rel="stylesheet" href="/css/sysconfig.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/vue.js"></script>
+    <script src="/js/layer.js"></script>
+</head>
+<body>
+<div id="app" v-cloak>
+    <!--单位信息配置-->
+    <div id="unit-config">
+        <h4 @click="showConfig('unit_config')">单位信息</h4>
+        <hr>
+        <div class="bg-color" id="unit-config-child" v-show="unit_config">
+            <table>
+                <tr></tr>
+                <tr>
+                    <td><label for="unit-name">单位名称</label><span class="span_c">*</span></td>
+                    <td><input type="text" id="unit-name" class="form-control"></td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td><label for="unit-phone">电话</label><span class="span_c">*</span></td>
+                    <td><input type="text" id="unit-phone" class="form-control"></td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td><label for="unit-uuid">单位编码</label></td>
+                    <td><input type="text" id="unit-uuid" class="form-control"></td>
+                </tr>
+                <tr></tr>
+            </table>
+        </div>
+    </div>
+
+    <!--用户名密码修改-->
+    <div id="edit-account">
+        <h4 @click="showConfig('edit_account')">账号信息</h4>
+        <hr>
+        <div class="bg-color" id="edit-account-child" v-show="edit_account">
+            <table>
+                <tr></tr>
+                <tr>
+                    <td><label for="unit-account">账号</label></td>
+                    <td><input type="text" id="unit-account" class="form-control" placeholder="推荐使用单位编码"></td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td><label for="unit-pwd">密码</label></td>
+                    <td><input type="text" id="unit-pwd" class="form-control" placeholder="推荐使用字母、数字和字符组合"></td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td><label for="unit-rpwd">密码确认</label></td>
+                    <td><input type="text" id="unit-rpwd" class="form-control" placeholder="请再次输入密码"></td>
+                </tr>
+                <tr></tr>
+            </table>
+        </div>
+    </div>
+
+    <!--串口信息-->
+    <div id="serial-port">
+        <h4 @click="showConfig('serial_port')">串口信息</h4>
+        <hr>
+        <div class="bg-color" id="serial-port-child" v-show="serial_port">
+            <table>
+                <tr></tr>
+                <tr>
+                    <td style="padding-left: 20px">现有串口</td>
+                    <td>
+                        <select name="" id="" class="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-default">串口扫描</button>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <button class="btn btn-default">打开体测串口</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-default">打开体成分串口</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-default">关闭全部串口</button>
+                    </td>
+                </tr>
+                <tr></tr>
+            </table>
+        </div>
+    </div>
+
+    <!--实时上传？-->
+    <div id="actual-upload">
+        <h4 @click="showConfig('actual_upload')">上传设置</h4>
+        <hr v-show="actual_upload">
+        <div class="bg-color" id="actual-upload-child" v-show="actual_upload">
+            <table>
+                <tr></tr>
+                <tr>
+                    <td><label for="upload-url">上传地址</label></td>
+                    <td style="padding-left: 20px"><input type="text" id="upload-url" class="form-control"></td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox">实时上传
+                            </label>
+                        </div>
+                    </td>
+                    <td style="padding-left: 20px">/* 勾选该选项测试完成将在<span style="color: red">联网情况</span>下自动上传测试数据 */</td>
+                </tr>
+                <tr></tr>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <hr>
+        <table>
+            <tr>
+                <td colspan="2">
+                    <button class="btn btn-primary" @click="goback">
+                        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;&nbsp;返回
+                    </button>
+                    <button class="btn btn-primary pull-right" @click="submit">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;&nbsp;保存
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+    <div id="copyright">
+        版权所有© 同方健康科技（北京）股份有限公司
+    </div>
+</div>
+
+<script>
+	new Vue({
+		el: '#app',
+		data: {
+			unit_config: true,
+			edit_account: false,
+			serial_port: false,
+			actual_upload: false
+		},
+		methods: {
+			showConfig(params) {
+				if (this[params] === true) {
+					this[params] = false;
+					return;
+				}
+				this.unit_config = this.edit_account = this.serial_port = this.actual_upload = false;
+				this[params] = true;
+			},
+			goback() {
+				history.back();
+			},
+			submit() {
+				/**
+				 * 提交
+				 */
+				alert('调用保存接口');
+			}
+		}
+	})
+</script>
+</body>
+</html>

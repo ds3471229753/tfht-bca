@@ -1,0 +1,24 @@
+#app{
+    width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 0;
+}
+
+h4{
+    font-weight: bold;
+}
+
+span{
+    color: red;
+    font-size: 2rem;
+}
+
+img{
+    width: 90%;
+}
+
+.p_center{
+    text-align: center;
+    font-weight: bold;
+}

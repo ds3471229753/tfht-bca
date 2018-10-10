@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试人员</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="/css/common.css">-->
+    <link rel="stylesheet" href="/css/add.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/layer.js"></script>
+</head>
+<body>
+<div id="app" v-cloak>
+    <h1>{{ state }}人员信息<i>带有红色<span class="span_c">*</span>的为必填项</i></h1>
+    <hr>
+    <div id="person-info">
+        <table>
+            <tr></tr>
+            <tr>
+                <td><label for="uid">编号</label><span class="span_c">*</span></td>
+                <td colspan="2"><input type="text" id="uid" class="form-control" v-model="uid"></td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td><label for="name">姓名</label><span class="span_c">*</span></td>
+                <td colspan="2"><input type="text" id="name" class="form-control" v-model="name"></td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td><label for="sex">性别</label><span class="span_c">*</span></td>
+                <td colspan="2">
+                    <select style="border-radius: 20px" class="form-control" id="sex" v-model="sex">
+                        <option value="1">男</option>
+                        <option value="2">女</option>
+                    </select>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td><label for="birthyear">出生年份</label><span class="span_c">*</span></td>
+                <td colspan="2">
+                    <input type="text" id="birthyear" class="form-control" placeholder="四位数字，如1990" v-model="birthyear">
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td><label for="height">身高</label><span class="span_c">*</span></td>
+                <td colspan="2"><input type="number" id="height" min="100" max="249" class="form-control" v-model="height" placeholder="单位cm/范围100~249cm"></td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td><label for="phone">手机号</label></td>
+                <td colspan="2"><input type="text" id="phone" class="form-control" v-model="phone"></td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td><label for="note">备注</label></td>
+                <td colspan="2"><input type="text" id="note" class="form-control" v-model="note"></td>
+            </tr>
+            <tr></tr>
+            <tr id="btn_group">
+                <td style="text-align: left">
+                    <button class="btn btn-primary" @click="goback">
+                        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;&nbsp;返回
+                    </button>
+                </td>
+                <td style="text-align: center">
+                    <button class="btn btn-primary" @click="reset">
+                        <span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;重置
+                    </button>
+                </td>
+                <td style="text-align: right">
+                    <button class="btn btn-primary" @click="submit">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;&nbsp;保存
+                    </button>
+                </td>
+            </tr>
+            <tr></tr>
+        </table>
+    </div>
+    <hr>
+    <div id="copyright">
+        版权所有© 同方健康科技（北京）股份有限公司
+    </div>
+</div>
+
+<script>
+	var vm = new Vue({
+		el: '#app',
+		data: {
+			state: '新增',
+            uid: '',
+            name: '',
+            sex: '1',
+            birthyear: '',
+            height: '',
+            phone: '',
+            note: '',
+		},
+        mounted(){
+            if(this.getQueryString('state') === '1'){
+            	for(let key in this.$data){
+            		this[key] = this.getQueryString(key);
+            		if(key === 'sex'){
+            			this[key] = this.getQueryString(key) === '男' ? 1 : 2;
+                    }
+                }
+	            this.state = '修改';
+            }
+        },
+        methods: {
+			// 获取url参数
+	        getQueryString(name) {
+		        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		        let r = window.location.search.substr(1).match(reg);
+		        if (r != null) {
+			        return decodeURIComponent(r[2]);
+		        }
+		        // return null; -> 返回null导致'' !== null,非空验证使用''报错
+                return '';
+	        },
+			goback(){
+				history.back();
+            },
+            reset(){
+				this.uid = this.name = this.birthyear = this.height = this.phone = this.note = '';
+				this.sex = '1';
+            },
+            submit(){
+	            /**
+                 * 提交代码到后台
+	             */
+	            let _this = this;
+                let reg = /^\d{4}$/; // 正则验证年份是否输入正确
+                let birthyear = Number(_this.birthyear),
+                    height = Number(_this.height);
+                if(_this.uid === '' || _this.name === '' || _this.sex === '' || _this.birthyear === '' || _this.height === ''){
+                	layer.msg('您有必填项未填写，请完善');
+                	return;
+                }
+                if(birthyear > new Date().getFullYear()){
+                	layer.msg('出生年份超过当前年份');
+                	return;
+                }
+                if(birthyear < 1900){
+	                layer.msg('出生年份过早');
+	                return;
+                }
+                if(!reg.test(birthyear)){
+	                layer.msg('出生年份格式不正确');
+	                return;
+                }
+                if(height >= 250 || height < 100){
+                	layer.msg('身高超出设定范围');
+                	return;
+                }
+                axios.post('/savePerson',{
+                	// uuid: sessionStorage.getItem('uuid'),
+                	uid: _this.uid,
+                    name: _this.name,
+                    sex: _this.sex,
+                    birthyear: _this.birthyear,
+                    height: _this.height,
+                    phone: _this.phone,
+                    note: _this.note,
+                    state: _this.getQueryString('state')
+                }).then(res => {
+                	console.log(res.data);
+                	if(res.data === 'fail'){
+                		layer.msg('保存失败，请重试');
+                    }else {
+		                layer.confirm('保存成功，点击【继续】新增人员，点击【完成】回到人员列表页', {
+			                icon: 1,
+			                btn: ['继续', '完成'] //按钮
+		                }, function (index) {
+			                _this.reset();
+			                layer.close(index);
+		                }, function () {
+		                	location.href = '/person';
+		                });
+                    }
+                })
+            }
+        }
+	})
+</script>
+</body>
+</html>

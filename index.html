@@ -2,9 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>老年人衰弱与运动机能评估系统</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/layer.js"></script>
 </head>
 <body>
+<div id="app" v-cloak>
+    <h1>{{ title }}</h1>
+    <div id="content">
+        <div class="col-sm-1 f-left"></div>
+        <div id="logoImg" class="col-sm-5 f-left">
+            <img :src="url" alt="">
+        </div>
+        <div id="login" class="col-sm-6 f-left">
+            <div class="input-style">
+                <h2><span style="top: 4px;" class="glyphicon glyphicon-user"></span> 账户登录</h2>
+                <br><br>
+                <input type="text" class="form-control" placeholder="账号" v-model="login_name">
+                <br><br>
+                <input type="password" class="form-control" placeholder="密码" v-model="login_pwd">
+                <br><br>
+                <button class="btn btn-primary" @click="login">登录</button>
+                <br><br><br><br><br>
+                <p>版权所有© 同方健康科技（北京）股份有限公司</p>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+        	title: '',
+        	url: '',
+            login_name: '',
+            login_pwd: '',
+            arr: [
+                {title: '老年人衰弱与运动机能评估系统',url: '/image/oldman.jpg'},
+                {title: '健身测评与指导系统',url: '/image/health.jpg'},
+                {title: '体适能测量与评估系统',url: '/image/cure.jpg'}
+            ]
+        },
+        created() {
+            // 如果是老年测试，使用0，健身为1，医疗为2
+            let temp = 0;
+            this.title = this.arr[temp].title;
+            this.url = this.arr[temp].url;
+        },
+        methods: {
+        	login() {
+		        let _this = this;
+        		if(this.login_name === '' && this.login_pwd === ''){
+        			layer.msg('请输入账户和密码');
+        			return;
+                }
+		        if(this.login_name === ''){
+			        layer.msg('请输入账户');
+			        return;
+		        }
+                if (this.login_pwd === ''){
+        			layer.msg('请输入密码');
+        			return;
+                }
+                /**
+                 * 提交信息到后台验证，进行登录
+                 * */
+                axios.post('/login',{login_name: _this.login_name,login_pwd: _this.login_pwd})
+                    .then(res => {
+                        if(res.data === 'noUser'){
+                        	layer.msg('用户不存在');
+                        }else if(res.data === 'errPwd') {
+	                        layer.msg('密码错误');
+                        }else {
+                            // sessionStorage.setItem('uuid',_this.login_name);
+	                        window.location.href = '/testdata';
+                        }
+                    })
+                    .catch(err => console.log(err));
+            }
+        }
+    })
+</script>
 </body>
 </html>

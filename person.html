@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>人员信息</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/person.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/layer.js"></script>
+</head>
+<body>
+<div id="app" v-cloak>
+    <!--头部，包含配置及连接状态信息-->
+    <div id="header" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/testdata">
+                    <img src="/image/logo.png" alt="">
+                </a>
+            </div>
+            <div>
+                <ul id="ul-header-left" class="nav navbar-nav pull-left">
+                    <li><a href="/testdata"><span class="glyphicon glyphicon-home"></span> 主页</a></li>
+                    <li><a href="/sysconfig"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>
+                    <li><a href="/person"><span class="glyphicon glyphicon-user"></span> 人员信息</a></li>
+                    <li><a href="/help"><span class="glyphicon glyphicon-list"></span> 说明与帮助</a></li>
+                    <!--<li><a href=""><span class="glyphicon glyphicon-upload"></span> 上传</a></li>-->
+                </ul>
+                <ul id="ul-header-right" class="nav navbar-nav pull-right">
+                    <!--体测仪-->
+                    <li><label for="body-measuring">体测仪：</label></li>
+                    <li class="ele-padding-8">
+                        <input id="body-measuring" type="text" class="form-control" readonly="readonly">
+                    </li>
+                    <!--体成分仪-->
+                    <li><label for="body-composition">体成分仪：</label></li>
+                    <li class="ele-padding-8">
+                        <input id="body-composition" type="text" class="form-control" readonly="readonly">
+                    </li>
+                    <!--连接仪器按钮及图标-->
+                    <li class="ele-padding-8">
+                        <button class="btn btn-default">连接仪器</button>
+                    </li>
+                    <li class="ele-padding-10">
+                        <img :src="img_url" alt="">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--主要信息-->
+    <div id="main-con">
+        <div style="height: 74px;">
+            <h2 class="pull-left"><span class="glyphicon glyphicon-user"></span>人员列表</h2>
+            <h4 class="pull-left" style="margin-left: 15px;margin-top: 27px">共<i style="color: red">{{count}}</i>人</h4>
+            <div class="pull-right" style="margin: 20px 10px 20px">
+                <div class="pull-left input-group">
+                    <div class="input-group row">
+                        <input type="text" class="form-control" placeholder="请输入用户编号" style="width: 45%" v-model="person_uid">
+                        <input type="text" class="form-control" placeholder="请输入用户姓名" style="width: 45%;margin-left: 15px" v-model="person_name">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="person_box">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th width="60px">
+                        <!--选择框-->
+                    </th>
+                    <th>用户编号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>出生年份</th>
+                    <th>身高</th>
+                    <th>手机号码</th>
+                    <th>备注</th>
+                </tr>
+                <tr v-for="(person,index) in persons" :key="index">
+                    <td style="text-align: center">
+                        <input type="checkbox" name="checkbox" v-model="checks" :value="person">
+                    </td>
+                    <td>{{ person.UID }}</td>
+                    <td>{{ person.Name }}</td>
+                    <td>{{ person.Sex }}</td>
+                    <td>{{ person.BirthYear }}</td>
+                    <td>{{ person.Height }}</td>
+                    <td>{{ person.Phone }}</td>
+                    <td>{{ person.Note }}</td>
+                </tr>
+            </table>
+        </div>
+        <!--功能栏-->
+        <div id="tool">
+            <div id="tool-left" class="pull-left">
+                <button class="btn btn-primary" @click="goback"><span class="glyphicon glyphicon-arrow-left"></span> 返回
+                </button>
+                <!--<button class="btn btn-warning"><span class="glyphicon glyphicon-list"></span> 查看测试数据</button>-->
+                <button class="btn btn-warning"><span class="glyphicon glyphicon-tasks"></span> 体成分仪主控测试</button>
+            </div>
+
+            <div id="tool-right" class="pull-right">
+                <button class="btn btn-primary" @click="registerPerson"><span class="glyphicon glyphicon-plus"></span>
+                    新增
+                </button>
+                <button class="btn btn-warning" @click="editPerson"><span class="glyphicon glyphicon-edit"></span> 修改</button>
+                <button class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> 导入</button>
+                <button class="btn btn-success"><span class="glyphicon glyphicon-log-out"></span> 导出</button>
+                <button class="btn btn-danger" @click="delPerson"><span class="glyphicon glyphicon-trash"></span> 删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!--尾部-->
+    <div id="footer">
+        版权所有© 同方健康科技（北京）股份有限公司
+    </div>
+</div>
+
+<script>
+	new Vue({
+		el: '#app',
+		data: {
+			img_url: '/image/Error.png',
+			count: 0,
+            persons: [],
+            checks: [],
+            person_uid: '',
+            person_name: '',
+		},
+        watch: {
+	        person_uid: function () {
+		        this.searchPerson();
+	        },
+	        person_name: function () {
+		        this.searchPerson();
+	        },
+        },
+		mounted() {
+			let _this = this;
+			axios.get('/initPerson')
+                .then(res => {
+                    console.log(res.data);
+                    _this.persons = res.data;
+                    _this.count = res.data.length;
+                })
+                .catch(err => console.log(err));
+		},
+		methods: {
+			// 返回
+			goback() {
+				history.back();
+			},
+			// 新增 state=0 add; state=1 edit;
+			registerPerson() {
+				location.href = '/add?state=0';
+			},
+            // 修改人员
+            editPerson(){
+	            if (this.checks.length === 0) {
+		            //提示层
+		            layer.msg('请选择要修改的数据!');
+	            } else if (this.checks.length > 1) {
+		            layer.msg('请选择一条数据进行修改!');
+	            }else {
+	            	console.log(this.checks[0]);
+	            	let _this = this.checks[0];
+	            	location.href = `/add?state=1&id=${_this.ID}&uid=${_this.UID}&name=${_this.Name}&sex=${_this.Sex}&birthyear=${_this.BirthYear}&height=${_this.Height}&phone=${_this.Phone}&note=${_this.Note}`;
+                }
+            },
+            // 删除人员
+            delPerson(){
+	            let _this = this;
+				if(_this.checks.length === 0){
+					layer.msg('请选择要删除的人员');
+                }else{
+					layer.confirm('您确定要删除吗？', {
+						icon: 5,
+						btn: ['确定', '取消'] //按钮
+					}, function () {
+						//删除多条数据
+						let params = {};
+						for (let i = 0; i < _this.checks.length; i++) {
+							params[_this.checks[i].ID] = _this.checks[i].ID;
+						}
+						console.log(params);
+						axios.get('/delPerson', {params: params})
+							.then(res => {
+								console.log(res.data);
+								if (res.data === 'OK') {
+									layer.alert('删除成功', {icon: 1}, function (index) {
+										layer.close(index);
+										location.reload();
+									})
+								}
+							}).catch(err => console.error(err));
+					}, function () {
+						layer.msg('那您再考虑下吧');
+					});
+                }
+            },
+            // 搜索人员
+            searchPerson(){
+				let _this = this;
+	            axios.get('/searchPerson', {
+		            params: {
+			            'person_uid': _this.person_uid,
+			            'person_name': _this.person_name,
+		            }
+	            }).then(res => {
+	            	if(res.data === 'noPerson'){
+	            		layer.msg('查无此人');
+                    }else {
+			            _this.persons = res.data;
+			            _this.count = res.data.length;
+                    }
+                }).catch(err => console.log(err));
+            }
+		}
+	})
+</script>
+</body>
+</html>
